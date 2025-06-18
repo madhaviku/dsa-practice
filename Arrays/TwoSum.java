@@ -23,3 +23,25 @@ class Solution {
         return new int[0];
     }
 }
+Time Complexity : O(N);
+
+If I want to return the two numbers that sum up to target
+
+Approach : Two Pointer (works when array is sorted.)
+    
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        int start = 0, end = nums.length-1;
+        while(start < end){
+            int sum = nums[start] + nums[end];
+            if(sum == target){
+                return new int[]{nums[start], nums[end]};
+            }else if(sum < target) start++;
+            else end--;
+        }
+        return new int[0];
+    }
+}
+
+Time Complexity : O(NLogN)
