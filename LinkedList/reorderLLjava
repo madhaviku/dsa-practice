@@ -1,0 +1,53 @@
+You are given the head of a singly linked-list. The list can be represented as:
+
+L0 → L1 → … → Ln - 1 → Ln
+Reorder the list to be on the following form:
+
+L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverse(ListNode node){
+        ListNode curr = node, prev = null, temp = null;
+        while(curr != null){
+            temp = curr;
+            curr = curr.next;
+            temp.next = prev;
+            prev = temp;
+        }
+        return prev;
+    }
+    public void reorderList(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode middle = reverse(slow.next);
+        slow.next = null;
+         
+        slow = head;
+        fast = middle;
+        while(fast != null){
+            ListNode temp1 = slow.next;
+            ListNode temp2 = fast.next;
+            slow.next = fast;
+            fast.next = temp1;
+
+            slow = temp1;
+            fast = temp2;
+        }
+
+    }
+}
