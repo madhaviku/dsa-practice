@@ -13,7 +13,7 @@ Input: grid = [
 ]
 Output: 1
 
-Solution 
+Approach 1 : Using DFS 
   
 class Solution {
     int[][] dir = {{0,1},{1,0}, {0,-1}, {-1,0}};
@@ -47,5 +47,54 @@ class Solution {
             }
         }
         return islands;
+    }
+}
+
+Approach 2: Using Union find or Disjoint set
+
+class Solution {
+    char[][] grid;
+    int m, n;
+    int[] parent;
+    int islands ;
+    private int find(int a){
+        if(parent[a] == a) return a;
+        return parent[a] = find(parent[a]);
+    }
+    private void union(int a, int b){
+        int rootA = find(a);
+        int rootB = find(b);
+        if(rootA != rootB){
+            parent[rootB] = rootA;
+            islands--;
+        }
+    }
+    private int getIndex(int i, int j){
+        return i * n + j;
+    }
+    public int numIslands(char[][] grid) {
+        this.grid = grid;
+        m = grid.length; n = grid[0].length;
+        parent = new int[m*n];
+        Arrays.setAll(parent, i->i);
+        islands = 0;
+        int[][] dir = {{0,1}, {1,0}, {-1,0}, {0,-1}};
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == '1'){
+                    islands++;
+                    for(int[] d : dir){
+                        int r = i + d[0];
+                        int c = j + d[1];
+                        if(r >= 0 && c >= 0 && r < m && c < n && grid[r][c] == '1'){
+                            union(getIndex(i, j), getIndex(r, c));
+                        }
+                    }
+                }
+            }
+        }
+        return islands;
+
     }
 }
